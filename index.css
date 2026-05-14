@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .modern-card {
+    @apply bg-white border border-slate-200/60 shadow-sm rounded-2xl overflow-hidden;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-medium transition-all hover:bg-indigo-700 active:scale-95 shadow-sm hover:shadow-indigo-200/50 hover:shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-xl font-medium transition-all hover:bg-slate-50 active:scale-95 shadow-sm disabled:opacity-50 inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply text-slate-600 hover:bg-slate-100 px-4 py-2 rounded-xl transition-all active:scale-95 inline-flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10;
+  }
+
+  .label-sm {
+    @apply text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 block;
+  }
+
+  .badge {
+    @apply px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider;
+  }
+}

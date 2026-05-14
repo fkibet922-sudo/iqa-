@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (
+          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'IQA') ||
+          (request.auth.token.email == "bettkyms@gmail.com" && request.auth.token.email_verified == true)
+        );
+    }
+
+    function isHOD() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'HOD';
+    }
+
+    function isTrainer() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Trainer';
+    }
+
+    function isClassRep() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ClassRep';
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+    }
+
+    match /trainers/{trainerId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /trainees/{traineeId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isHOD();
+    }
+
+    match /classes/{classId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isHOD();
+    }
+
+    match /units/{unitId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isHOD();
+    }
+
+    match /unitAssignments/{assignmentId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isHOD();
+    }
+
+    match /traineeAttendanceRecords/{recordId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isTrainer();
+    }
+
+    match /remarks/{remarkId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    match /trainerSchedules/{scheduleId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || isClassRep();
+    }
+  }
+}

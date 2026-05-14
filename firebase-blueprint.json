@@ -1,0 +1,158 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user with role-based access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "role": { "type": "string", "enum": ["IQA", "HOD", "Trainer", "ClassRep"] },
+        "department": { "type": "string" },
+        "ePortfolioLink": { "type": "string" }
+      },
+      "required": ["id", "name", "username", "password", "role"]
+    },
+    "Trainer": {
+      "title": "Trainer",
+      "description": "Trainer details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "department": { "type": "string" },
+        "ePortfolioLink": { "type": "string" }
+      },
+      "required": ["id", "name", "department"]
+    },
+    "Trainee": {
+      "title": "Trainee",
+      "description": "Trainee details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "admissionNumber": { "type": "string" },
+        "classId": { "type": "string" }
+      },
+      "required": ["id", "name", "admissionNumber", "classId"]
+    },
+    "Class": {
+      "title": "Class",
+      "description": "Class details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "department": { "type": "string" }
+      },
+      "required": ["id", "name", "department"]
+    },
+    "Unit": {
+      "title": "Unit",
+      "description": "Unit details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "classId": { "type": "string" }
+      },
+      "required": ["id", "name", "classId"]
+    },
+    "UnitAssignment": {
+      "title": "UnitAssignment",
+      "description": "Assignment of unit to trainer",
+      "type": "object",
+      "properties": {
+        "unitId": { "type": "string" },
+        "trainerId": { "type": "string" }
+      },
+      "required": ["unitId", "trainerId"]
+    },
+    "TraineeAttendanceRecord": {
+      "title": "TraineeAttendanceRecord",
+      "description": "Record of trainee attendance",
+      "type": "object",
+      "properties": {
+        "traineeId": { "type": "string" },
+        "classId": { "type": "string" },
+        "unitId": { "type": "string" },
+        "trainerId": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "absent"] }
+      },
+      "required": ["traineeId", "classId", "unitId", "trainerId", "date", "time", "status"]
+    },
+    "Remark": {
+      "title": "Remark",
+      "description": "Weekly remarks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "week": { "type": "string" },
+        "type": { "type": "string", "enum": ["trainee", "trainer"] },
+        "remarkText": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorSignature": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "classId", "week", "type", "remarkText", "authorName", "authorSignature", "date"]
+    },
+    "TrainerSchedule": {
+      "title": "TrainerSchedule",
+      "description": "Weekly trainer schedule submitted by class rep",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "week": { "type": "string" },
+        "schedule": { "type": "object" },
+        "submittedBy": { "type": "string" },
+        "submittedAt": { "type": "string" }
+      },
+      "required": ["id", "classId", "week", "schedule", "submittedBy", "submittedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of users"
+    },
+    "/trainers/{trainerId}": {
+      "schema": "Trainer",
+      "description": "Collection of trainers"
+    },
+    "/trainees/{traineeId}": {
+      "schema": "Trainee",
+      "description": "Collection of trainees"
+    },
+    "/classes/{classId}": {
+      "schema": "Class",
+      "description": "Collection of classes"
+    },
+    "/units/{unitId}": {
+      "schema": "Unit",
+      "description": "Collection of units"
+    },
+    "/unitAssignments/{assignmentId}": {
+      "schema": "UnitAssignment",
+      "description": "Collection of unit assignments"
+    },
+    "/traineeAttendanceRecords/{recordId}": {
+      "schema": "TraineeAttendanceRecord",
+      "description": "Collection of trainee attendance records"
+    },
+    "/remarks/{remarkId}": {
+      "schema": "Remark",
+      "description": "Collection of remarks"
+    },
+    "/trainerSchedules/{scheduleId}": {
+      "schema": "TrainerSchedule",
+      "description": "Collection of trainer schedules"
+    }
+  }
+}
